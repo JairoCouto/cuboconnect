@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Indicated\IndicatedController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/indicateds', [IndicatedController::class, 'index'])->name('indicateds');
