@@ -11,3 +11,16 @@
 
 4. Realizar instalação do npm através do comando: **npm install** e após a finalização do mesmo rodar **npm run production** para criação dos arquivos css e js
 
+5. Será necessário criar uma instância de banco de dados e setar as credenciais no .env
+
+6. Rodar o comando **php artisan migrate** , afins de criar as tabelas do projeto.
+
+7. Na sequência, rodar a seed para criação dos tipos de situação: **php artisan db:seed --class=SeedSituation**
+
+8. Caso queira criar dados fakes na base basta rodar o comando: **php artisan db:seed --class=UsersFakeSeed**
+
+9. Para rodar o projeto localmente: **php artisan serve**
+
+
+## LOGS
+1. Para acessar a sessão de logs de erros gerados pela aplicação durante a fase de desenvolvimento, é possível acessar a rota: **/logs**

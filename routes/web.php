@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Indicated\IndicatedController;
+use App\Http\Controllers\Indicated\UserIndicatedController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [IndicatedController::class, 'index'])->name('index');
 
 
-Route::get('/indicateds', [IndicatedController::class, 'index'])->name('indicateds');
+Route::prefix('/indicateds')
+     ->name('indicateds.')
+     ->group(function () {
+        
+        Route::get('view-create', [IndicatedController::class, 'viewCreate'])->name('view-create');
+        Route::post('create', [IndicatedController::class, 'create'])->name('create');
+
+        Route::post('update', [IndicatedController::class, 'update'])->name('update');
+
+        Route::get('destroy/{id}', [IndicatedController::class, 'destroy'])->name('destroy');
+
+        Route::get('list-indicated/{id}', [UserIndicatedController::class, 'index'])->name('list-indicated');
+     });
+
+
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);

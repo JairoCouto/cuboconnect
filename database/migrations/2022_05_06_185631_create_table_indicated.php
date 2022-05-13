@@ -14,13 +14,13 @@ class CreateTableIndicated extends Migration
     public function up()
     {
         Schema::create('usuario', function (Blueprint $table) {
-
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
-
+            
             $table->bigInteger('id_usuario')->autoIncrement();
-            $table->bigInteger('id_indicado')->comment('ID do usuário que indicou');
+            $table->bigInteger('id_indicado')->nullable()->comment('ID do usuário que indicou');
+            $table->string('nome', 150)->comment('Nome do indicado');
             $table->double('cpf')->unique()->comment('CPF do indicado');
             $table->string('email', 150)->comment('Email do indicado');
             $table->bigInteger('situacao')->comment('Situação do indicado');

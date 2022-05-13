@@ -2,43 +2,65 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Enums\SituationIndicatedEnum;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'usuario';
+    protected $primaryKey = 'id_usuario';
+    public $timestamps = true;
+
     protected $fillable = [
-        'name',
+        'id_indicado',
+        'nome',
+        'cpf',
         'email',
-        'password',
+        'situacao',
+        'created_at',
+        'updated_at'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
+    protected $appends = [
+        'situacao_descricao',
+        'data_criacao',
+        'situacoes_indicado'
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime:d/m/Y H:i:s',
+        'updated_at' => 'datetime:d/m/Y H:i:s'
     ];
+
+    /**
+     * Responsável por formatar o CPF com zero a esquerda
+     */
+    public function getCpfAttribute($cpf)
+    {
+        return str_pad($cpf, 11, "0", STR_PAD_LEFT);
+    }
+
+    public function getSituacaoDescricaoAttribute()
+    {
+        $situation = SituationIndicatedEnum::situationsIndicated($this->situacao);
+
+        return $situation;
+    }
+
+    public function getDataCriacaoAttribute()
+    {
+        $date =  format_carbon_date($this->created_at, 'd/m/Y');
+
+        return $date;
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class, 'id_usuario', 'id_usuario');
+    }
 }
